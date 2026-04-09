@@ -34,7 +34,43 @@
       z-index: 100;
     }
 
-    /* 3D Image Transition Base */
+    /* Hero section with blended background image */
+    .hero-section {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: 0;
+      opacity: 0.35;
+      filter: blur(2px) brightness(0.8);
+      transform: scale(1.05);
+      transition: transform 0.3s ease-out;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+    
+    /* Overlay gradient to blend image perfectly with black background */
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.9) 100%);
+      z-index: 1;
+    }
+    
+    /* Remove old hero-img styles since we're using background approach */
     .hero-img {
       transition: transform 0.3s ease-out;
       will-change: transform;
@@ -127,25 +163,28 @@
   </div>
 </nav>
 
-<section id="about" class="min-h-screen flex items-center px-6 pt-24 overflow-hidden">
-  <div class="grid md:grid-cols-2 gap-10 max-w-7xl mx-auto items-center">
-    
+<!-- Hero section with blended background image -->
+<section id="about" class="hero-section px-6 pt-24">
+  <!-- Background image blended into hero section -->
+  <img src="hero-image.png" class="hero-bg" id="hero-bg-img" alt="background">
+  <div class="hero-overlay"></div>
+  
+  <div class="hero-content grid md:grid-cols-2 gap-10 max-w-7xl mx-auto items-center w-full">
     <div data-aos="fade-right" data-aos-duration="1200">
       <h1 class="text-6xl md:text-8xl font-black leading-none mb-6">
         ENGINEERING <br>
         <span class="text-orange" id="hero-title">SYSTEMS</span>
       </h1>
-      <p class="text-gray-400 mb-8 max-w-md text-lg">
+      <p class="text-gray-200 mb-8 max-w-md text-lg drop-shadow-lg">
         We build high-performance software, dashboards, and digital systems designed for real-world efficiency.
       </p>
-      <a href="#contact" class="bg-orange text-black px-10 py-4 font-bold uppercase text-sm inline-block hover:bg-white transition-colors duration-300">
+      <a href="#contact" class="bg-orange text-black px-10 py-4 font-bold uppercase text-sm inline-block hover:bg-white transition-colors duration-300 shadow-xl">
         Get Started
       </a>
     </div>
 
-    <div class="flex justify-center relative" data-aos="zoom-out" data-aos-duration="1500">
-      <img src="hero-image.png" id="main-img" class="hero-img w-[400px] md:w-[600px] drop-shadow-[0_35px_35px_rgba(255,107,0,0.2)]">
-    </div>
+    <!-- Empty div to maintain grid structure, image is now background -->
+    <div class="hidden md:block"></div>
   </div>
 </section>
 
@@ -175,12 +214,12 @@
   </div>
 </section>
 
-<!-- Projects section: made helium watsapp.jpeg and comment.jpeg side by side with reduced size -->
+<!-- Projects section: helium watsapp.jpeg and comment.jpeg side by side with reduced size -->
 <section id="projects" class="py-32 px-6">
   <div class="max-w-6xl mx-auto">
     <h2 class="text-5xl font-black mb-16 text-orange text-center" data-aos="fade-down">Featured Project</h2>
     
-    <!-- Side by side images container - reduced size and placed next to each other -->  
+    <!-- Side by side images container - reduced size and placed next to each other -->
     <div class="side-by-side-container" data-aos="zoom-in-up">
       <div class="side-by-side-item relative overflow-hidden rounded-2xl group">
         <img src="helium watsapp.jpeg" class="w-full transition-transform duration-700 group-hover:scale-105">
@@ -199,9 +238,6 @@
     </div>
   </div>
 </section>
-
-<!-- This section remains exactly as original - no changes -->
-
 
 <section id="contact" class="bg-orange text-black py-32 px-6 relative overflow-hidden">
   <div class="max-w-7xl mx-auto relative z-10">
@@ -240,14 +276,16 @@
       .from("nav", { opacity: 0, y: -20, duration: 0.5 }, "-=0.2");
   });
 
-  // 3D Mouse Movement Micro-interaction for Hero Image
-  const heroImg = document.getElementById('main-img');
-  document.addEventListener('mousemove', (e) => {
-    const { clientX, clientY } = e;
-    const x = (clientX - window.innerWidth / 2) / 30;
-    const y = (clientY - window.innerHeight / 2) / 30;
-    heroImg.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
-  });
+  // 3D Mouse Movement Micro-interaction for Hero Background Image
+  const heroBg = document.getElementById('hero-bg-img');
+  if (heroBg) {
+    document.addEventListener('mousemove', (e) => {
+      const { clientX, clientY } = e;
+      const x = (clientX - window.innerWidth / 2) / 50;
+      const y = (clientY - window.innerHeight / 2) / 50;
+      heroBg.style.transform = `scale(1.05) translate(${x}px, ${y}px)`;
+    });
+  }
 
   // GSAP Parallax Scroll Effect for Hero Text
   gsap.to("#hero-title", {
@@ -259,6 +297,20 @@
     x: 100,
     opacity: 0.5
   });
+  
+  // Optional: subtle parallax for background image on scroll
+  if (heroBg) {
+    gsap.to(heroBg, {
+      scrollTrigger: {
+        trigger: "#about",
+        start: "top top",
+        end: "bottom top",
+        scrub: true
+      },
+      y: 100,
+      opacity: 0.2
+    });
+  }
 </script>
 
 </body>
