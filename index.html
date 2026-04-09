@@ -20,6 +20,12 @@
       color: white;
       overflow-x: hidden;
     }
+    @media (max-width: 480px) {
+  .hero-section h1 {
+    font-size: 3.5rem; /* Adjusted for mobile so it doesn't clip */
+    line-height: 1;
+  }
+}
     
     .text-orange { color: #ff6b00; }
     .bg-orange { background: #ff6b00; }
@@ -242,7 +248,12 @@
   
   <div class="hero-content max-w-7xl mx-auto w-full">
     <div data-aos="fade-right" data-aos-duration="1200" class="text-card">
-      <h1 class="text-[12vw] sm:text-6xl md:text-8xl font-black leading-none mb-6 break-words">
+     <h1 class="text-6xl md:text-8xl font-black leading-none mb-6">
+  ENGINEERING <br>
+  <span class="text-orange" id="hero-title">SYSTEMS</span>
+</h1>
+
+<h1 class="text-5xl md:text-7xl lg:text-8xl font-black leading-[0.9] mb-6 tracking-tighter">
   ENGINEERING <br>
   <span class="text-orange" id="hero-title">SYSTEMS</span>
 </h1>
