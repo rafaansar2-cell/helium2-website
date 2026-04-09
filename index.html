@@ -242,10 +242,11 @@
   
   <div class="hero-content max-w-7xl mx-auto w-full">
     <div data-aos="fade-right" data-aos-duration="1200" class="text-card">
-      <h1 class="text-6xl md:text-8xl font-black leading-none mb-6">
-        ENGINEERING <br>
-        <span class="text-orange" id="hero-title">SYSTEMS</span>
-      </h1>
+      <h1 class="text-[12vw] sm:text-6xl md:text-8xl font-black leading-none mb-6 break-words">
+  ENGINEERING <br>
+  <span class="text-orange" id="hero-title">SYSTEMS</span>
+</h1>
+     
       <p class="text-gray-200 mb-8 max-w-md text-lg">
         We build high-performance software, dashboards, and digital systems designed for real-world efficiency.
       </p>
@@ -525,6 +526,18 @@
       .to("#loader", { duration: 0.8, height: 0, ease: "expo.inOut" })
       .from("nav", { opacity: 0, y: -20, duration: 0.5 }, "-=0.2");
   });
+  // Replace the old hero-title animation with this:
+if (window.innerWidth > 768) {
+  gsap.to("#hero-title", {
+    scrollTrigger: { 
+      trigger: "#hero-title", 
+      start: "top center", 
+      scrub: true 
+    },
+    x: 100,
+    opacity: 0.5
+  });
+}
 
   const heroBg = document.getElementById('hero-bg-img');
   if (heroBg) {
