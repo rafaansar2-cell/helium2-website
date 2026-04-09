@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HELIUM² | Engineering the Future</title>
-  <link rel="icon" type="logo.png" href="/images/favicon.ico">
+  
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -23,7 +23,6 @@
     .text-orange { color: #ff6b00; }
     .bg-orange { background: #ff6b00; }
 
-    /* Custom Loading Animation Overlay */
     #loader {
       position: fixed;
       inset: 0;
@@ -34,16 +33,15 @@
       z-index: 100;
     }
 
-    /* 3D Image Transition Base */
     .hero-img {
       transition: transform 0.3s ease-out;
       will-change: transform;
+      /* Fix for "Ugly" edges: ensures the image fits naturally */
+      mix-blend-mode: screen; 
     }
 
-    /* Smooth Scrolling for Anchors */
     html { scroll-behavior: smooth; }
 
-    /* Micro-interactions for Nav */
     .nav-link {
       position: relative;
     }
@@ -69,11 +67,14 @@
 
 <nav class="fixed w-full z-50 bg-black/60 backdrop-blur-lg border-b border-white/10">
   <div class="flex justify-between items-center p-6 max-w-7xl mx-auto">
-    <h1 class="font-black text-xl tracking-tighter">HELIUM²</h1>
+    <div class="flex items-center gap-3">
+      <img src="logo.jpeg" alt="HELIUM² Logo" class="h-8 w-auto">
+      <h1 class="font-black text-xl tracking-tighter">HELIUM²</h1>
+    </div>
     <div class="space-x-6 text-xs uppercase hidden md:flex">
       <a href="#about" class="nav-link">About</a>
       <a href="#services" class="nav-link">Services</a>
-      <a href="#projects" class="nav-link">Projects</a>
+      <a href="#showcase" class="nav-link">Showcase</a>
       <a href="#contact" class="nav-link text-orange font-bold">Contact</a>
     </div>
   </div>
@@ -96,53 +97,28 @@
     </div>
 
     <div class="flex justify-center relative" data-aos="zoom-out" data-aos-duration="1500">
-      <img src="hero-image.png" id="main-img" class="hero-img w-[400px] md:w-[600px] drop-shadow-[0_35px_35px_rgba(255,107,0,0.2)]">
+      <img src="Screenshot 2026-04-09 144935.png" id="main-img" class="hero-img w-[400px] md:w-[600px] drop-shadow-[0_20px_50px_rgba(255,107,0,0.3)]">
     </div>
   </div>
 </section>
 
-<section id="services" class="py-32 bg-white text-black px-6">
+<section id="showcase" class="py-24 px-6 bg-zinc-900">
   <div class="max-w-7xl mx-auto">
-    <h2 class="text-6xl font-black mb-16 text-orange" data-aos="fade-up">Services</h2>
-
-    <div class="grid md:grid-cols-3 gap-16">
-      <div class="group" data-aos="fade-up" data-aos-delay="100">
-        <div class="h-1 w-12 bg-orange mb-6 group-hover:w-full transition-all duration-500"></div>
-        <h3 class="font-black text-2xl mb-4">Software Systems</h3>
-        <p class="text-gray-600">ERP systems, personalized dashboards, and automation tools engineered for scale.</p>
+    <h2 class="text-4xl font-black mb-12 text-orange text-center" data-aos="fade-up">Project & Feedback</h2>
+    
+    <div class="grid md:grid-cols-2 gap-8 items-start">
+      <div class="bg-black p-4 rounded-2xl border border-white/5 shadow-2xl" data-aos="fade-up">
+        <img src="helium watsapp.jpeg" class="rounded-xl w-full h-auto object-cover mb-4">
+        <h3 class="text-xl font-bold">Pharmacy ERP Dashboard</h3>
+        <p class="text-gray-400 text-sm">Patient & inventory management system.</p>
       </div>
 
-      <div class="group" data-aos="fade-up" data-aos-delay="200">
-        <div class="h-1 w-12 bg-orange mb-6 group-hover:w-full transition-all duration-500"></div>
-        <h3 class="font-black text-2xl mb-4">Web Development</h3>
-        <p class="text-gray-600">Modern, lightning-fast websites and web applications built with cutting-edge stacks.</p>
-      </div>
-
-      <div class="group" data-aos="fade-up" data-aos-delay="300">
-        <div class="h-1 w-12 bg-orange mb-6 group-hover:w-full transition-all duration-500"></div>
-        <h3 class="font-black text-2xl mb-4">UI/UX Design</h3>
-        <p class="text-gray-600">Minimal and intuitive user experiences that bridge the gap between human and machine.</p>
+      <div class="bg-black p-4 rounded-2xl border border-white/5 shadow-2xl" data-aos="fade-up" data-aos-delay="200">
+        <img src="comment.jpeg" class="rounded-xl w-full h-auto object-cover mb-4">
+        <h3 class="text-xl font-bold">Client Success</h3>
+        <p class="text-gray-400 text-sm">Verified feedback on system performance.</p>
       </div>
     </div>
-  </div>
-</section>
-
-<section id="projects" class="py-32 px-6">
-  <div class="max-w-6xl mx-auto">
-    <h2 class="text-5xl font-black mb-16 text-orange text-center" data-aos="fade-down">Featured Project</h2>
-    <div class="relative overflow-hidden rounded-2xl group" data-aos="zoom-in-up">
-      <img src="helium watsapp.jpeg" class="w-full transition-transform duration-700 group-hover:scale-105">
-      <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-10">
-        <h3 class="text-3xl font-bold">Pharmacy ERP Dashboard</h3>
-        <p class="text-orange">Smart system for patient & inventory management.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="py-24 px-6 bg-gray-900">
-  <div class="max-w-4xl mx-auto" data-aos="fade-up">
-    <img src="comment.jpeg" class="rounded-xl shadow-2xl border border-white/10 w-full">
   </div>
 </section>
 
@@ -152,30 +128,24 @@
     <h2 class="text-6xl md:text-8xl font-black leading-none mb-8" data-aos="fade-right">
       LET'S WORK <br> TOGETHER
     </h2>
-    <p class="italic text-xl mb-12 max-w-2xl">"Innovating ahead of immediate customer demands. Tell us your vision — we’ll engineer the path to it."</p>
-
+    
     <div class="flex flex-wrap gap-4">
-      <a href="https://wa.me/919497647784" target="_blank" class="bg-black text-white px-12 py-5 uppercase text-sm font-black hover:invert transition-all">message </a>
-      
+      <a href="https://wa.me/919497647784" target="_blank" class="bg-black text-white px-12 py-5 uppercase text-sm font-black hover:invert transition-all">Get a Quote</a>
       <a href="https://www.instagram.com/helium2__?igsh=Y3NjdXc3ZHR2aHh0" target="_blank" class="border-2 border-black px-12 py-5 uppercase text-sm font-black hover:bg-black hover:text-white transition-all">Instagram</a>
-      
       <a href="https://www.linkedin.com/company/helium-2/" target="_blank" class="border-2 border-black px-12 py-5 uppercase text-sm font-black hover:bg-black hover:text-white transition-all">LinkedIn</a>
     </div>
   </div>
-  
   <div class="absolute -bottom-10 -right-10 text-[15rem] font-black opacity-5 select-none pointer-events-none">HELIUM</div>
 </section>
 
-<footer class="py-12 text-center text-gray-500 text-xs bg-black border-t border-white/5">
+<footer class="py-12 text-center text-gray-500 text-xs bg-black">
   HELIUM² © 2026 | Engineered in Kerala
 </footer>
 
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 <script>
-  // Initialize AOS (Animate on Scroll)
   AOS.init({ once: true });
 
-  // GSAP Preloader Animation Sequence
   window.addEventListener('load', () => {
     const tl = gsap.timeline();
     tl.to("#loader-text", { duration: 1, opacity: 0, y: -20, ease: "power4.inOut" })
@@ -183,7 +153,6 @@
       .from("nav", { opacity: 0, y: -20, duration: 0.5 }, "-=0.2");
   });
 
-  // 3D Mouse Movement Micro-interaction for Hero Image
   const heroImg = document.getElementById('main-img');
   document.addEventListener('mousemove', (e) => {
     const { clientX, clientY } = e;
@@ -192,7 +161,6 @@
     heroImg.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
   });
 
-  // GSAP Parallax Scroll Effect for Hero Text
   gsap.to("#hero-title", {
     scrollTrigger: {
       trigger: "#hero-title",
