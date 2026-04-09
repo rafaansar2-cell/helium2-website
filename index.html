@@ -36,16 +36,16 @@
       z-index: 100;
     }
 
-    /* Hero section with blended background image */
-    .hero-section {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-    }
+   /* Hero section with blended background image */
+.hero-section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
 
-    .hero-bg {
+.hero-bg {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -53,17 +53,35 @@
   object-fit: cover;
   object-position: center;
   z-index: 0;
-  opacity: 0.7;
-  filter: blur(1px) brightness(0.9);
-  transform: scale(1.05);
+  opacity: 0.85;
+  filter: blur(0px) brightness(1);
+  transform: scale(1);
   transition: transform 0.3s ease-out;
 }
 
+/* Light overlay over whole background */
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.7) 100%);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 1;
+}
+
+/* Dark card behind text only - keeps text readable! */
+.text-card {
+  position: relative;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  padding: 2rem;
+  border-radius: 1.5rem;
+  border-left: 4px solid #ff6b00;
+  max-width: 550px;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
 }
     
 
@@ -219,24 +237,22 @@
 
 <!-- Hero section with blended background image -->
 <section id="about" class="hero-section px-6 pt-24 animated-bg">
-  <img src="hero-image.jpeg" class="hero-bg" id="hero-bg-img" alt="background">
+  <img src="hero-image.png" class="hero-bg" id="hero-bg-img" alt="background">
   <div class="hero-overlay"></div>
   
-  <div class="hero-content grid md:grid-cols-2 gap-10 max-w-7xl mx-auto items-center w-full">
-    <div data-aos="fade-right" data-aos-duration="1200">
-      <!-- Removed SINCE 2024 badge -->
+  <div class="hero-content max-w-7xl mx-auto w-full">
+    <div data-aos="fade-right" data-aos-duration="1200" class="text-card">
       <h1 class="text-6xl md:text-8xl font-black leading-none mb-6">
         ENGINEERING <br>
         <span class="text-orange" id="hero-title">SYSTEMS</span>
       </h1>
-      <p class="text-gray-200 mb-8 max-w-md text-lg drop-shadow-lg">
+      <p class="text-gray-200 mb-8 max-w-md text-lg">
         We build high-performance software, dashboards, and digital systems designed for real-world efficiency.
       </p>
       <a href="#contact" class="bg-orange text-black px-10 py-4 font-bold uppercase text-sm inline-block hover:bg-white transition-colors duration-300 shadow-xl rounded-lg">
         Get Started <i class="fas fa-arrow-right ml-2"></i>
       </a>
     </div>
-    <div class="hidden md:block"></div>
   </div>
   
   <!-- Scroll indicator -->
@@ -246,6 +262,7 @@
     </div>
   </div>
 </section>
+  
 
 <!-- Stats Section -->
 <section class="py-20 px-6 border-y border-white/10 bg-black/40 tech-dots">
