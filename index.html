@@ -1,290 +1,618 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#090909" />
-  <meta name="description" content="HELIUM² — Engineering the future through software systems, web applications, and digital transformation." />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HELIUM² | Engineering the Future</title>
-  <link rel="icon" href="logo.png" type="image/png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="icon" type="image/x-icon" href="logo.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   <style>
-    :root { --orange:#ff6b00; --orange-2:#ff9b4a; --ink:#080808; --muted:#969696; --line:rgba(255,255,255,.12); --ease:cubic-bezier(.23,1,.32,1); --ease-soft:cubic-bezier(.16,1,.3,1); --tracking-tight:-.065em; }
-    * { box-sizing:border-box; margin:0; padding:0; }
-    html { scroll-behavior:smooth; }
-    body { background:var(--ink); color:#fff; font-family:'Manrope',sans-serif; overflow-x:hidden; }
-    body.locked { overflow:hidden; }
-    ::selection { background:var(--orange); color:#000; }
-    a { color:inherit; text-decoration:none; }
-    button, input { font:inherit; }
-    button { cursor:pointer; }
-    .mono { font-family:'DM Mono',monospace; }
-    .wrap { width:min(1160px,calc(100% - 56px)); margin:auto; }
-    p { letter-spacing:-.012em; }
-    h1,h2,h3,h4,strong { text-wrap:balance; }
-    .hero-content h1,.section-head h2,.contact h2,.quote blockquote { letter-spacing:var(--tracking-tight); }
-    .orange { color:var(--orange); }
-    .eyebrow { color:var(--orange); font:500 11px 'DM Mono',monospace; letter-spacing:.24em; text-transform:uppercase; }
-    .noise { position:fixed; inset:0; z-index:20; pointer-events:none; opacity:.035; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E"); }
-    #progress { position:fixed; top:0; left:0; width:0; height:3px; z-index:100; background:linear-gradient(90deg,var(--orange),#ffd0a8); box-shadow:0 0 18px var(--orange); }
-    #cursor { position:fixed; width:10px; height:10px; border-radius:50%; pointer-events:none; z-index:101; transform:translate(-50%,-50%); background:var(--orange); box-shadow:0 0 18px rgba(255,107,0,.8); mix-blend-mode:screen; }
-    #cursor-halo { position:fixed; width:48px; height:48px; border:1px solid rgba(255,155,74,.6); border-radius:50%; pointer-events:none; z-index:100; transform:translate(-50%,-50%); transition:width .35s var(--ease-soft),height .35s var(--ease-soft),border-color .25s,background .25s; mix-blend-mode:screen; }
-    #cursor.active { width:15px; height:15px; }
-    #cursor-halo.active { width:78px; height:78px; border-color:var(--orange); background:rgba(255,107,0,.08); }
-    #loader { position:fixed; inset:0; z-index:99; display:grid; place-items:center; background:var(--ink); }
-    #loader .loader-mark { font-size:clamp(3rem,10vw,8rem); font-weight:700; letter-spacing:-.09em; overflow:hidden; }
-    #loader .loader-mark span { display:inline-block; animation:loaderIn .7s var(--ease) both; }
-    #loader .loader-mark span:nth-child(2){animation-delay:.08s}.loader-mark span:nth-child(3){animation-delay:.16s}.loader-mark span:nth-child(4){animation-delay:.24s}.loader-mark span:nth-child(5){animation-delay:.32s}.loader-mark span:nth-child(6){animation-delay:.40s}
-    @keyframes loaderIn { from{transform:translateY(110%);opacity:0} to{transform:translateY(0);opacity:1} }
-    header { position:fixed; top:0; width:100%; z-index:50; border-bottom:1px solid transparent; transition:.35s var(--ease); }
-    header.scrolled { background:rgba(8,8,8,.78); border-color:var(--line); backdrop-filter:blur(18px); }
-    nav { height:78px; display:flex; align-items:center; justify-content:space-between; }
-    .brand { display:flex; gap:10px; align-items:center; font-weight:700; letter-spacing:-.07em; font-size:20px; }
-    .brand img { width:30px; height:30px; object-fit:contain; border-radius:8px; }
-    .brand sup { color:var(--orange); font-size:11px; }
-    .nav-links { display:flex; gap:30px; align-items:center; font:11px 'DM Mono',monospace; text-transform:uppercase; letter-spacing:.1em; }
-    .nav-links a { position:relative; color:#bbb; transition:.25s; }.nav-links a:hover,.nav-links a.active{color:#fff}.nav-links a::after{content:'';position:absolute;left:0;bottom:-8px;width:0;height:2px;background:var(--orange);transition:.25s var(--ease)}.nav-links a:hover::after,.nav-links a.active::after{width:100%}
-    .menu { display:none; width:42px; height:42px; border:1px solid var(--line); background:transparent; color:#fff; border-radius:50%; }
-
-
-
-    .hero-art, .film-caption, .scroll-cue, .hero::before, .hero::after, .hero .orb { transition:opacity .45s var(--ease-soft); }
-    .hero:not(.in-view) .hero-art, .hero:not(.in-view) .film-caption, .hero:not(.in-view) .scroll-cue, .hero:not(.in-view) .orb { opacity:0; pointer-events:none; }
-    .hero:not(.in-view)::before, .hero:not(.in-view)::after { opacity:0; }
-
-    /* Visible scroll-film stage correction */
-    .hero { min-height:220vh; display:block; }
-    .hero-content { position:sticky; top:0; min-height:100vh; height:100vh; display:flex; flex-direction:column; justify-content:center; z-index:2; }
-    .hero-art { position:fixed; top:50%; right:clamp(2%,7vw,10%); z-index:1; }
-    .film-caption { position:fixed; }
-    .scroll-cue { position:fixed; }
-    .hero::before { position:fixed; }
-    .hero::after { position:fixed; }
-    .orb { position:fixed; }
-    .hero.is-scrubbing .hero-art-inner { filter:saturate(1.35) brightness(1.16) drop-shadow(0 0 28px rgba(255,107,0,.35)); }
-    .hero.is-scrubbing .hero-content { transform:translateY(calc(var(--film-progress) * -34px)); transition:transform .15s linear; }
-    @media (max-width:800px) { .hero { min-height:180vh; } .hero-art { position:fixed; } }
-    @media (prefers-reduced-motion:reduce) { .hero { min-height:100vh; } .hero-content { position:relative; height:auto; min-height:100vh; transform:none!important; } .hero-art { position:absolute; } .film-caption,.scroll-cue { position:absolute; } .hero::before,.hero::after,.orb { position:absolute; } }
-
-    /* scroll-site-generator skill: cinematic scroll stage, without changing existing content */
-    .hero { --film-progress:0; }
-    .hero-art { transform:translate3d(0,calc(-50% + var(--scroll-shift, 0px)),0); transition:transform .18s linear; }
-    .hero-art-inner { transition:transform .18s var(--ease-soft), filter .5s var(--ease-soft); }
-    .hero.is-scrubbing .hero-art-inner { filter:saturate(1.18) brightness(1.08); }
-    .hero::after { transform:translateY(calc(var(--film-progress) * 22px)); opacity:calc(.22 + var(--film-progress) * .12); }
-    .film-caption { position:absolute; left:clamp(18px,5vw,72px); bottom:clamp(24px,6vh,72px); z-index:3; display:flex; align-items:center; gap:12px; color:rgba(255,255,255,.48); font:10px 'DM Mono',monospace; letter-spacing:.2em; text-transform:uppercase; opacity:.72; transition:opacity .35s var(--ease-soft); }
-    .film-caption i { width:28px; height:1px; background:var(--orange); }
-    .hero.is-scrubbing .film-caption { opacity:1; }
-    .section-focus { scroll-margin-top:78px; }
-    @media (prefers-reduced-motion:reduce) { .hero-art { transition:none; } .hero::after { transform:none; } }
-
-    .hero { min-height:100vh; position:relative; display:flex; align-items:center; overflow:hidden; isolation:isolate; }
-    .hero::before { content:''; position:absolute; inset:0; z-index:-2; background:radial-gradient(circle at 75% 38%,rgba(255,107,0,.16),transparent 32%),radial-gradient(circle at 20% 80%,rgba(255,107,0,.08),transparent 25%),#080808; }
-    .hero::after { content:''; position:absolute; inset:0; z-index:-1; opacity:.22; background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px); background-size:70px 70px; mask-image:linear-gradient(to bottom,#000,transparent 92%); }
-
-    .hero-art { position:absolute; z-index:-1; right:clamp(2%,7vw,10%); top:50%; width:min(42vw,520px); aspect-ratio:1; transform:translateY(-50%); perspective:1100px; pointer-events:none; }
-    .hero-art::before { content:''; position:absolute; inset:18%; border-radius:50%; background:rgba(165,94,255,.28); filter:blur(72px); transform:translateZ(-120px); animation:artGlow 5s ease-in-out infinite; }
-    .hero-art::after { content:''; position:absolute; inset:8%; border:1px solid rgba(255,155,74,.18); border-radius:50%; transform:rotateX(68deg) rotateZ(-18deg); animation:artRing 13s linear infinite; }
-    .hero-art-inner { position:absolute; inset:0; transform-style:preserve-3d; transition:transform .18s var(--ease-soft); animation:artFloat 6s ease-in-out infinite; }
-    .hero-art img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; mix-blend-mode:screen; filter:drop-shadow(0 28px 32px rgba(0,0,0,.55)) drop-shadow(0 0 24px rgba(192,119,255,.25)); transform:translateZ(50px) rotate(-8deg); user-select:none; }
-    .hero-art-shadow { position:absolute; left:17%; right:17%; bottom:4%; height:8%; border-radius:50%; background:rgba(0,0,0,.65); filter:blur(18px); transform:rotateX(68deg) translateZ(-100px); }
-    @keyframes artFloat { 50% { transform:translateY(-12px) rotateZ(1deg); } }
-    @keyframes artGlow { 50% { opacity:.72; transform:translateZ(-120px) scale(1.12); } }
-    @keyframes artRing { to { transform:rotateX(68deg) rotateZ(342deg); } }
-    @media (max-width:1000px) { .hero-art { right:-8%; width:min(50vw,470px); opacity:.72; } }
-    @media (max-width:800px) { .hero-art { right:-16%; top:38%; width:min(68vw,360px); opacity:.42; } .hero-art::after { opacity:.5; } }
-    @media (max-width:520px) { .hero-art { right:-20%; top:34%; width:78vw; opacity:.3; } }
-
-    .orb { position:absolute; border-radius:50%; filter:blur(1px); pointer-events:none; z-index:-1; }.orb.one{width:22vw;height:22vw;right:7%;top:22%;border:1px solid rgba(255,107,0,.32);box-shadow:inset 0 0 60px rgba(255,107,0,.08),0 0 90px rgba(255,107,0,.08);animation:spin 24s linear infinite}.orb.two{width:8px;height:8px;right:23%;top:34%;background:var(--orange);box-shadow:0 0 30px var(--orange);animation:float 5s ease-in-out infinite}.orb.three{width:4px;height:4px;left:39%;top:30%;background:#fff;box-shadow:0 0 18px #fff;animation:float 7s 1s ease-in-out infinite}
-    @keyframes spin { to{transform:rotate(360deg)} } @keyframes float { 50%{transform:translateY(-25px) translateX(12px)} }
-    .hero-content { padding-top:96px; }.hero-kicker{display:flex;align-items:center;gap:14px;margin-bottom:28px;opacity:0;animation:rise .8s .8s var(--ease) forwards}.hero-kicker i{width:38px;height:1px;background:var(--orange)}
-    @keyframes rise { to{opacity:1;transform:none} } .hero-content h1{font-size:clamp(4.8rem,12.5vw,11rem);line-height:.82;letter-spacing:-.075em;font-weight:700;max-width:1000px;transform:translateY(40px);opacity:0;animation:rise .95s .95s var(--ease) forwards}.hero-content h1 .outline{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.65)}
-    .hero-bottom { margin-top:52px; display:flex; align-items:flex-end; justify-content:space-between; gap:30px; opacity:0; animation:rise .8s 1.2s var(--ease) forwards; }.hero-bottom p{max-width:445px;color:#aaa;line-height:1.9;font-size:14px}.hero-actions{display:flex;gap:12px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;gap:12px;padding:15px 22px;border:1px solid var(--orange);font:500 11px 'DM Mono',monospace;text-transform:uppercase;letter-spacing:.1em;transition:.25s var(--ease)}.btn.primary{background:var(--orange);color:#000}.btn:hover{transform:translateY(-4px);box-shadow:0 12px 35px rgba(255,107,0,.24)}.btn:active{transform:scale(.97)}
-    .scroll-cue{position:absolute;bottom:28px;right:24px;writing-mode:vertical-rl;color:#777;font:10px 'DM Mono',monospace;letter-spacing:.2em;text-transform:uppercase}.scroll-cue::after{content:'';display:inline-block;height:54px;width:1px;background:var(--orange);margin-top:12px;animation:linePulse 1.8s infinite}@keyframes linePulse{50%{transform:scaleY(.35);transform-origin:top;opacity:.35}}
-    section { padding:148px 0; position:relative; }
-    section::before { content:''; position:absolute; top:0; left:50%; width:min(1160px,calc(100% - 56px)); height:1px; transform:translateX(-50%); background:linear-gradient(90deg,transparent,var(--line),transparent); opacity:.55; }.section-head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:54px}.section-head h2{font-size:clamp(2.7rem,6vw,5.6rem);line-height:.94;letter-spacing:-.065em;margin-top:18px}.section-head p{max-width:330px;color:var(--muted);line-height:1.7;font-size:14px}
-    .stats{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:32px 0}.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}.stat{border-left:1px solid var(--line);padding-left:20px}.stat strong{display:block;font-size:40px;letter-spacing:-.08em;color:var(--orange)}.stat span{font:10px 'DM Mono',monospace;text-transform:uppercase;letter-spacing:.1em;color:#777}
-    .services{background:#f4f3ef;color:#0a0a0a}.services .eyebrow{color:#d95700}.service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#d8d5cf}.service-card{background:#f4f3ef;padding:34px;min-height:270px;transition:.35s var(--ease);position:relative;overflow:hidden}.service-card::after{content:'';position:absolute;inset:auto -20% -65% -20%;height:180px;background:var(--orange);border-radius:50%;filter:blur(35px);opacity:0;transition:.4s}.service-card:hover{background:#fff;transform:translateY(-9px);box-shadow:0 24px 50px rgba(0,0,0,.12)}.service-card:hover::after{opacity:.11}.service-number{font:11px 'DM Mono',monospace;color:#999}.service-icon{font-size:34px;color:var(--orange);margin:35px 0 20px}.service-card h3{font-size:23px;letter-spacing:-.04em;margin-bottom:12px}.service-card p{color:#666;line-height:1.7;font-size:14px;max-width:260px}
-    .stack{background:linear-gradient(180deg,#090909,#111)}.stack-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.tech{padding:26px;border:1px solid var(--line);background:rgba(255,255,255,.025);transition:.3s var(--ease)}.tech:hover{border-color:var(--orange);background:rgba(255,107,0,.07);transform:translateY(-6px)}.tech i{font-size:29px;color:var(--orange);margin-bottom:22px}.tech h4{font-size:16px}.tech small{display:block;color:#777;font:10px 'DM Mono',monospace;margin-top:7px;text-transform:uppercase}
-    .projects{background:#0c0c0c}.project-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}.project{position:relative;min-height:440px;overflow:hidden;border:1px solid var(--line);background:#171717}.project.small{min-height:440px}.project img{width:100%;height:100%;object-fit:cover;filter:grayscale(1);opacity:.7;transition:.7s var(--ease)}.project:hover img{transform:scale(1.08);filter:grayscale(0);opacity:.95}.project::after{content:'';position:absolute;inset:0;background:linear-gradient(transparent 25%,rgba(0,0,0,.9));}.project-meta{position:absolute;z-index:2;left:28px;right:28px;bottom:28px}.project-meta h3{font-size:clamp(1.8rem,3vw,3rem);letter-spacing:-.07em}.project-meta p{color:var(--orange);font:11px 'DM Mono',monospace;margin-top:8px}.project-tag{position:absolute;z-index:3;right:22px;top:22px;border:1px solid rgba(255,255,255,.28);padding:8px 10px;font:10px 'DM Mono',monospace}
-    .quote{padding:105px 0;background:radial-gradient(circle at 50% 0,rgba(255,107,0,.14),transparent 45%)}.quote blockquote{font-size:clamp(2rem,4.8vw,5rem);letter-spacing:-.08em;line-height:1.02;max-width:930px}.quote cite{display:block;margin-top:24px;color:var(--orange);font:11px 'DM Mono',monospace;font-style:normal;letter-spacing:.12em;text-transform:uppercase}
-    .contact{background:var(--orange);color:#000;overflow:hidden}.contact::before{content:'²';position:absolute;right:2%;bottom:-35%;font-size:38rem;line-height:1;font-weight:700;opacity:.08;pointer-events:none}.contact .eyebrow{color:#000}.contact h2{font-size:clamp(3.7rem,10vw,9.8rem);line-height:.78;letter-spacing:-.1em;max-width:1000px;margin:24px 0 42px}.contact p{max-width:490px;line-height:1.7;font-size:16px;margin-bottom:34px}.contact .btn{border-color:#000}.contact .btn.primary{background:#000;color:#fff}.contact .btn:hover{box-shadow:0 12px 35px rgba(0,0,0,.18)}
-    footer{padding:65px 0 28px;border-top:1px solid var(--line)}.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.3fr;gap:35px;padding-bottom:55px}.footer-grid h4{font-size:13px;margin-bottom:18px}.footer-grid p,.footer-grid li,.footer-grid a{color:#777;font-size:13px;line-height:2}.footer-grid a:hover{color:var(--orange)}.footer-links{list-style:none}.socials{display:flex;gap:18px;margin-top:22px}.socials a{font-size:18px}.subscribe{display:flex;border-bottom:1px solid #444;margin-top:14px}.subscribe input{min-width:0;flex:1;background:transparent;border:0;outline:0;color:#fff;padding:10px 0}.subscribe button{border:0;background:transparent;color:var(--orange)}.footer-bottom{border-top:1px solid var(--line);padding-top:22px;display:flex;justify-content:space-between;color:#666;font:10px 'DM Mono',monospace;text-transform:uppercase;letter-spacing:.05em}
-    .reveal{opacity:0;transform:translateY(34px) scale(.985);transition:opacity .85s var(--ease-soft),transform .85s var(--ease-soft)}.reveal.visible{opacity:1;transform:none}
-    .tilt-card { transform-style:preserve-3d; will-change:transform; transition:transform .25s var(--ease-soft), border-color .25s; }
-    .spotlight { position:relative; overflow:hidden; }
-    .spotlight::before { content:''; position:absolute; width:280px; height:280px; left:var(--spot-x,-200px); top:var(--spot-y,-200px); transform:translate(-50%,-50%); background:radial-gradient(circle,rgba(255,107,0,.14),transparent 68%); pointer-events:none; transition:left .12s ease-out,top .12s ease-out; z-index:1; }
-    .spotlight > * { position:relative; z-index:2; }.stagger > *{opacity:0;transform:translateY(20px);transition:opacity .65s var(--ease),transform .65s var(--ease)}.stagger.visible > *{opacity:1;transform:none}.stagger.visible > *:nth-child(2){transition-delay:.08s}.stagger.visible > *:nth-child(3){transition-delay:.16s}.stagger.visible > *:nth-child(4){transition-delay:.24s}
-
-    /* Branded section-to-section transitions */
-    #section-wipe { position:fixed; inset:0; z-index:90; pointer-events:none; opacity:0; background:linear-gradient(110deg,#090909 0 46%,var(--orange) 46% 52%,#090909 52% 100%); transform:translateY(102%); }
-    #section-wipe.is-moving { animation:sectionWipe .72s var(--ease-soft) both; }
-    @keyframes sectionWipe { 0% { opacity:0; transform:translateY(102%); } 18% { opacity:1; } 48% { opacity:1; transform:translateY(0); } 72% { opacity:1; transform:translateY(-102%); } 100% { opacity:0; transform:translateY(-102%); } }
-    .section-focus { animation:sectionFocus .8s var(--ease-soft) both; }
-    @keyframes sectionFocus { 0% { opacity:.72; transform:translateY(22px) scale(.985); } 100% { opacity:1; transform:none; } }
-    .section-focus::after { content:''; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 50% 20%,rgba(255,107,0,.1),transparent 42%); opacity:0; animation:focusGlow .9s ease-out both; }
-    @keyframes focusGlow { 25% { opacity:1; } 100% { opacity:0; } }
-    @media (prefers-reduced-motion:reduce) { #section-wipe { display:none; } .section-focus { animation:none; } .section-focus::after { display:none; } }
-
-    #toast{position:fixed;right:22px;bottom:22px;z-index:80;background:#fff;color:#000;padding:15px 18px;border-left:3px solid var(--orange);font-size:13px;transform:translateY(25px);opacity:0;pointer-events:none;transition:.3s var(--ease)}#toast.show{transform:none;opacity:1}
-
-    /* Taste-inspired interior type and spacing system: calm, editorial, readable. */
-    .services, .stack, .projects, .quote, .contact, footer { font-family:'DM Sans',sans-serif; }
-    .services .eyebrow, .stack .eyebrow, .projects .eyebrow, .quote .eyebrow, .contact .eyebrow,
-    .service-number, .tech small, .project-meta p, .project-tag { font-family:'DM Mono',monospace; }
-    .services .wrap, .stack .wrap, .projects .wrap, .quote .wrap, .contact .wrap { position:relative; }
-    .services .section-head, .stack .section-head, .projects .section-head { align-items:flex-start; margin-bottom:72px; }
-    .services .section-head > div, .stack .section-head > div, .projects .section-head > div { min-width:0; }
-    .services .section-head h2, .stack .section-head h2, .projects .section-head h2 {
-      font-family:'Manrope',sans-serif; font-size:clamp(3.1rem,6.6vw,6.4rem); line-height:.98;
-      letter-spacing:-.075em; font-weight:700; margin-top:22px;
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: black;
+      color: white;
+      overflow-x: hidden;
     }
-    .services .section-head p, .stack .section-head p, .projects .section-head p {
-      max-width:390px; padding-top:40px; font-size:16px; line-height:1.95; letter-spacing:-.015em;
-    }
-    .services { padding-top:170px; padding-bottom:170px; }
-    .service-grid { gap:14px; background:transparent; }
-    .service-card { min-height:360px; padding:42px 38px 44px; border:1px solid #ddd9d2; }
-    .service-icon { margin:58px 0 31px; font-size:29px; }
-    .service-card h3 { font-family:'Manrope',sans-serif; font-size:clamp(1.45rem,2vw,1.8rem); line-height:1.15; letter-spacing:-.045em; margin-bottom:18px; }
-    .service-card p { max-width:290px; font-size:15px; line-height:1.9; letter-spacing:-.01em; }
-    .stack { padding-top:160px; padding-bottom:160px; }
-    .stack-grid { gap:16px; }
-    .tech { padding:34px 28px 32px; min-height:170px; }
-    .tech i { margin-bottom:32px; }
-    .tech h4 { font-family:'Manrope',sans-serif; font-size:18px; letter-spacing:-.035em; }
-    .projects { padding-top:170px; padding-bottom:170px; }
-    .project-grid { gap:22px; }
-    .project, .project.small { min-height:500px; }
-    .project-meta { left:36px; right:36px; bottom:36px; }
-    .project-meta h3 { font-family:'Manrope',sans-serif; font-size:clamp(1.8rem,3.2vw,3.3rem); line-height:1.05; letter-spacing:-.065em; }
-    .project-meta p { margin-top:14px; letter-spacing:.06em; }
-    .quote { padding:150px 0; }
-    .quote blockquote { max-width:900px; font-family:'Manrope',sans-serif; font-size:clamp(2.4rem,5.4vw,5.8rem); line-height:1.08; letter-spacing:-.07em; }
-    .quote cite { margin-top:38px; }
-    .contact { padding:185px 0 175px; }
-    .contact .wrap { max-width:1160px; }
-    .contact h2 { max-width:930px; font-family:'Manrope',sans-serif; font-size:clamp(4rem,9.6vw,9.2rem); line-height:.92; letter-spacing:-.075em; margin:30px 0 54px; }
-    .contact p { max-width:560px; font-size:18px; line-height:1.9; letter-spacing:-.015em; margin-bottom:46px; }
-    .contact .hero-actions { gap:16px; }
-    .contact .btn { padding:17px 25px; }
-    footer { padding-top:82px; }
-    .footer-grid { gap:56px; padding-bottom:72px; }
-    .footer-grid h4 { font-family:'Manrope',sans-serif; font-size:14px; letter-spacing:-.02em; margin-bottom:22px; }
-    .footer-grid p, .footer-grid li, .footer-grid a { font-size:14px; line-height:2.15; }
-    .footer-bottom { padding-top:28px; }
-    @media (max-width:800px) {
-      .services, .stack, .projects { padding-top:118px; padding-bottom:118px; }
-      .services .section-head, .stack .section-head, .projects .section-head { margin-bottom:48px; }
-      .services .section-head p, .stack .section-head p, .projects .section-head p { padding-top:25px; max-width:460px; }
-      .service-card { min-height:310px; padding:34px 28px; }
-      .service-icon { margin:38px 0 24px; }
-      .project, .project.small { min-height:390px; }
-      .quote { padding:110px 0; }
-      .contact { padding:125px 0 120px; }
-      .contact h2 { margin:24px 0 34px; }
-      .contact p { font-size:16px; line-height:1.8; margin-bottom:34px; }
-    }
-    @media (max-width:520px) {
-      .services, .stack, .projects { padding-top:100px; padding-bottom:100px; }
-      .services .section-head h2, .stack .section-head h2, .projects .section-head h2 { font-size:clamp(2.8rem,14vw,4.4rem); }
-      .services .section-head p, .stack .section-head p, .projects .section-head p { font-size:15px; line-height:1.85; }
-      .service-card { min-height:280px; }
-      .project, .project.small { min-height:320px; }
-      .project-meta { left:24px; right:24px; bottom:24px; }
-      .quote blockquote { font-size:clamp(2.15rem,11vw,3.6rem); }
-      .contact { padding:102px 0 100px; }
-      .contact h2 { font-size:clamp(3.4rem,15vw,5.4rem); }
+   #hero-title, .hero-section h1 {
+  white-space: nowrap; /* Prevents the word from breaking mid-way */
+  word-break: keep-all;
+}
+
+/* Make the max-width of the container larger */
+.max-w-7xl {
+  max-width: 90rem !important; /* Increases container from 1280px to 1440px */
+}
+
+@media (max-width: 1024px) {
+  .hero-section h1 {
+    font-size: 12vw; /* Scales font based on screen width to prevent overflow */
+    line-height: 0.9;
+  }
+}
+    
+    .text-orange { color: #ff6b00; }
+    .bg-orange { background: #ff6b00; }
+    .border-orange { border-color: #ff6b00; }
+
+    /* Custom Loading Animation Overlay */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
     }
 
-    @media (max-width:800px){.wrap{width:min(100% - 34px,600px)}.nav-links{position:fixed;top:78px;left:17px;right:17px;padding:22px;background:rgba(12,12,12,.97);border:1px solid var(--line);display:flex;flex-direction:column;align-items:flex-start;gap:20px;transform:translateY(-20px);opacity:0;pointer-events:none;transition:.3s var(--ease)}.nav-links.open{transform:none;opacity:1;pointer-events:auto}.menu{display:block}.hero-content h1{font-size:clamp(4rem,17vw,7rem)}.hero-bottom,.section-head{display:block}.hero-actions{margin-top:28px}.scroll-cue{display:none}.stats-grid{grid-template-columns:repeat(2,1fr);gap:24px}.service-grid,.stack-grid{grid-template-columns:1fr 1fr}.project-grid{grid-template-columns:1fr}.project,.project.small{min-height:360px}.footer-grid{grid-template-columns:1fr 1fr}.footer-grid>div:first-child{grid-column:1/-1}.footer-bottom{display:block;line-height:2}.orb.one{width:55vw;height:55vw;right:-15%;top:29%}}
-    @media (max-width:520px){section{padding:100px 0}.service-grid,.stack-grid{grid-template-columns:1fr}.service-card{min-height:220px}.project,.project.small{min-height:310px}.footer-grid{grid-template-columns:1fr}.footer-grid>div:first-child{grid-column:auto}.hero-bottom p{font-size:14px}}
-    @media (max-width:800px){#cursor,#cursor-halo{display:none}}
-    @media (prefers-reduced-motion:reduce){.hero-art-inner{animation:none!important}.hero-art::after,.hero-art::before{animation:none!important}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}#cursor{display:none}.reveal,.stagger>*{opacity:1;transform:none}}
+   /* Hero section with blended background image */
+.hero-section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  opacity: 0.85;
+  filter: blur(0px) brightness(1);
+  transform: scale(1);
+  transition: transform 0.3s ease-out;
+}
+
+/* Light overlay over whole background */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+/* Dark card behind text only - keeps text readable! */
+.text-card {
+  position: relative;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  padding: 2rem;
+  border-radius: 1.5rem;
+  border-left: 4px solid #ff6b00;
+  max-width: 550px;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+    
+
+    /* Smooth Scrolling for Anchors */
+    html { scroll-behavior: smooth; }
+
+    /* Micro-interactions for Nav */
+    .nav-link {
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background-color: #ff6b00;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+    
+    /* Logo styling */
+    .logo-img {
+      height: 36px;
+      width: auto;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    
+    /* Horizontal Scrolling Gallery */
+    .horizontal-scroll {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 1.5rem;
+      padding: 1rem;
+      scrollbar-width: thin;
+      scrollbar-color: #ff6b00 #333;
+      cursor: grab;
+      user-select: none;
+    }
+    .horizontal-scroll:active {
+      cursor: grabbing;
+    }
+    .horizontal-scroll::-webkit-scrollbar {
+      height: 6px;
+    }
+    .horizontal-scroll::-webkit-scrollbar-track {
+      background: #1a1a1a;
+      border-radius: 10px;
+    }
+    .horizontal-scroll::-webkit-scrollbar-thumb {
+      background: #ff6b00;
+      border-radius: 10px;
+    }
+    .scroll-item {
+      flex: 0 0 auto;
+      width: 280px;
+      scroll-snap-align: start;
+      transition: transform 0.3s ease;
+    }
+    .scroll-item:hover {
+      transform: translateY(-10px);
+    }
+    .scroll-item img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      border-radius: 1rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    
+    /* Floating elements animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    .floating {
+      animation: float 6s ease-in-out infinite;
+    }
+    .floating-delayed {
+      animation: float 7s ease-in-out infinite 1s;
+    }
+    
+    /* Tech dots pattern */
+    .tech-dots {
+      background-image: radial-gradient(rgba(255,107,0,0.15) 1px, transparent 1px);
+      background-size: 30px 30px;
+    }
+    
+    /* Glow effect */
+    .glow {
+      transition: all 0.3s ease;
+    }
+    .glow:hover {
+      filter: drop-shadow(0 0 15px rgba(255,107,0,0.5));
+    }
+    
+    /* Animated background gradient similar to saihasoft */
+    .animated-bg {
+      position: relative;
+      overflow: hidden;
+    }
+    .animated-bg::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -50%;
+      width: 200%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,107,0,0.1), transparent);
+      animation: shine 8s infinite;
+      pointer-events: none;
+    }
+    @keyframes shine {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    @media (max-width: 768px) {
+      .scroll-item {
+        width: 220px;
+      }
+      .scroll-item img {
+        height: 260px;
+      }
+    }
   </style>
 </head>
+
 <body>
-  <div id="loader"><div class="loader-mark"><span>H</span><span>E</span><span>L</span><span>I</span><span>U</span><span class="orange">M²</span></div></div>
-  <div id="progress"></div><div id="section-wipe"></div><div id="cursor"></div><div id="cursor-halo"></div><div class="noise"></div>
-  <header id="header"><nav class="wrap"><a class="brand" href="#top"><img src="logo.png" alt="" onerror="this.style.display='none'"><span>HELIUM<sup>²</sup></span></a><button class="menu" id="menu" aria-label="Toggle navigation"><i class="fa-solid fa-bars"></i></button><div class="nav-links" id="navLinks"><a href="#about">About</a><a href="#services">Services</a><a href="#projects">Projects</a><a href="#contact" class="orange">Start a project</a></div></nav></header>
-  <main id="top">
-    <section class="hero" id="about"><div class="orb one"></div><div class="orb two"></div><div class="orb three"></div><div class="hero-art" id="hero-art" aria-hidden="true"><div class="hero-art-inner" id="hero-art-inner"><div class="hero-art-shadow"></div><img src="hero-image.jpeg" alt="" draggable="false"></div></div><div class="wrap hero-content"><div class="hero-kicker"><i></i><span class="eyebrow">Independent digital engineering studio · 2026</span></div><h1>ENGINEERING<br><span class="outline">SYSTEMS</span><span class="orange">.</span></h1><div class="hero-bottom"><p>We build high-performance software, dashboards, and digital systems designed for real-world efficiency — from first idea to reliable infrastructure.</p><div class="hero-actions"><a href="#contact" class="btn primary magnetic">Get started <i class="fa-solid fa-arrow-right"></i></a><a href="#projects" class="btn magnetic">Explore work</a></div></div></div><div class="film-caption"><i></i><span id="film-caption-text">A continuous digital story</span></div><div class="scroll-cue">Scroll to explore</div></section>
-    <section class="stats"><div class="wrap stats-grid stagger"><div class="stat"><strong data-count="50">0+</strong><span>Projects delivered</span></div><div class="stat"><strong data-count="30">0+</strong><span>Happy clients</span></div><div class="stat"><strong data-count="24">0/7</strong><span>Support mindset</span></div><div class="stat"><strong data-count="100">0%</strong><span>Client focus</span></div></div></section>
-    <section class="services" id="services"><div class="wrap"><div class="section-head reveal"><div><span class="eyebrow">01 / What we do</span><h2>Built to<br><span class="orange">move.</span></h2></div><p>We combine engineering discipline with sharp design to make complex products feel simple, fast, and inevitable.</p></div><div class="service-grid stagger"><article class="service-card spotlight tilt-card"><span class="service-number">01 — SYSTEMS</span><div class="service-icon"><i class="fa-solid fa-microchip"></i></div><h3>Software systems</h3><p>ERP systems, custom dashboards, and automation tools engineered for scale.</p></article><article class="service-card spotlight tilt-card"><span class="service-number">02 — DIGITAL</span><div class="service-icon"><i class="fa-solid fa-globe"></i></div><h3>Web development</h3><p>Modern, lightning-fast websites and web applications built around your goals.</p></article><article class="service-card spotlight tilt-card"><span class="service-number">03 — EXPERIENCE</span><div class="service-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div><h3>UI / UX design</h3><p>Intuitive interfaces that bridge the gap between human intent and machine power.</p></article></div></div></section>
-    <section class="stack"><div class="wrap"><div class="section-head reveal"><div><span class="eyebrow">02 / Our ecosystem</span><h2>Tools for<br><span class="orange">momentum.</span></h2></div><p>The stack stays flexible. The standard stays high.</p></div><div class="stack-grid stagger"><div class="tech spotlight tilt-card"><i class="fa-brands fa-react"></i><h4>React.js</h4><small>Interface layer</small></div><div class="tech spotlight tilt-card"><i class="fa-brands fa-node-js"></i><h4>Node.js</h4><small>Runtime systems</small></div><div class="tech spotlight tilt-card"><i class="fa-brands fa-python"></i><h4>Python</h4><small>Data + automation</small></div><div class="tech spotlight tilt-card"><i class="fa-solid fa-database"></i><h4>MongoDB</h4><small>Data foundations</small></div></div></div></section>
-    <section class="projects" id="projects"><div class="wrap"><div class="section-head reveal"><div><span class="eyebrow">03 / Selected work</span><h2>Proof of<br><span class="orange">progress.</span></h2></div><p>Products that turn operational friction into clear, measurable momentum.</p></div><div class="project-grid reveal"><a class="project spotlight tilt-card" href="#contact"><span class="project-tag">CASE / 001</span><img src="helium watsapp.jpeg" alt="Pharmacy ERP dashboard" onerror="this.src='https://placehold.co/1200x800/171717/ff6b00?text=Pharmacy+ERP'"/><div class="project-meta"><h3>Pharmacy ERP Dashboard</h3><p>Patient systems · Inventory intelligence</p></div></a><a class="project small spotlight tilt-card" href="#contact"><span class="project-tag">CASE / 002</span><img src="comment.jpeg" alt="Client feedback hub" onerror="this.src='https://placehold.co/800x800/171717/ff6b00?text=Feedback+Hub'"/><div class="project-meta"><h3>Feedback Hub</h3><p>Real-time insights · Engagement analytics</p></div></a></div></div></section>
-    <section class="quote"><div class="wrap reveal"><span class="eyebrow">04 / A client perspective</span><blockquote>“HELIUM² transformed our digital infrastructure completely. Their engineering excellence is unmatched.”</blockquote><cite>— A partner in progress</cite></div></section>
-    <section class="contact" id="contact"><div class="wrap reveal"><span class="eyebrow">05 / Ready to build?</span><h2>LET'S WORK<br>TOGETHER<span class="orange">.</span></h2><p>Tell us what is slowing your business down. We’ll help engineer the path from friction to flow.</p><div class="hero-actions"><a href="https://wa.me/919497647784" target="_blank" rel="noreferrer" class="btn primary magnetic"><i class="fa-brands fa-whatsapp"></i> Message us</a><a href="mailto:hello@helium2.com" class="btn magnetic">hello@helium2.com</a></div></div></section>
-  </main>
-  <footer><div class="wrap"><div class="footer-grid"><div><a class="brand" href="#top">HELIUM<sup>²</sup></a><p style="margin-top:18px;max-width:270px">Engineering the future through innovative software solutions and digital transformation.</p><div class="socials"><a href="https://www.instagram.com/helium2__" target="_blank" rel="noreferrer"><i class="fa-brands fa-instagram"></i></a><a href="https://www.linkedin.com/company/helium-2/" target="_blank" rel="noreferrer"><i class="fa-brands fa-linkedin"></i></a><a href="https://wa.me/919497647784" target="_blank" rel="noreferrer"><i class="fa-brands fa-whatsapp"></i></a></div></div><div><h4>Navigate</h4><ul class="footer-links"><li><a href="#about">About</a></li><li><a href="#services">Services</a></li><li><a href="#projects">Projects</a></li><li><a href="#contact">Contact</a></li></ul></div><div><h4>Capabilities</h4><ul class="footer-links"><li>Software development</li><li>Cloud solutions</li><li>AI & automation</li><li>UI / UX strategy</li></ul></div><div><h4>Stay in the loop</h4><p>Occasional ideas on systems, design, and digital growth.</p><form class="subscribe" id="subscribe"><input type="email" placeholder="Email address" aria-label="Email address" required><button aria-label="Subscribe"><i class="fa-solid fa-arrow-right"></i></button></form><p style="margin-top:20px">+91 94976 47784<br>hello@helium2.com</p></div></div><div class="footer-bottom"><span>© 2026 HELIUM² — Engineered in Kerala</span><span>100% secure & confidential</span></div></div></footer>
-  <div id="toast" role="status"></div>
-  <script>
-    const $ = (s, root=document) => root.querySelector(s); const $$ = (s, root=document) => [...root.querySelectorAll(s)];
-    const loader = $('#loader'); window.addEventListener('load', () => setTimeout(() => { loader.style.transition='opacity .6s var(--ease), visibility .6s'; loader.style.opacity='0'; loader.style.visibility='hidden'; }, 650));
-    const header=$('#header'), progress=$('#progress'); window.addEventListener('scroll',()=>{ const y=scrollY; header.classList.toggle('scrolled',y>30); progress.style.width=(y/(document.documentElement.scrollHeight-innerHeight)*100)+'%'; },{passive:true});
-    const menu=$('#menu'), links=$('#navLinks'); menu.addEventListener('click',()=>{links.classList.toggle('open'); menu.innerHTML=links.classList.contains('open')?'<i class="fa-solid fa-xmark"></i>':'<i class="fa-solid fa-bars"></i>';}); $$('.nav-links a').forEach(a=>a.addEventListener('click',()=>links.classList.remove('open')));
-    const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible'); if(e.target.classList.contains('stats-grid')) animateCounters(); observer.unobserve(e.target)}}),{threshold:.12}); $$('.reveal,.stagger').forEach(el=>observer.observe(el));
-    let counted=false; function animateCounters(){if(counted)return; counted=true; $$('[data-count]').forEach(el=>{const target=+el.dataset.count; const suffix=el.textContent.includes('/')?'/7':el.textContent.includes('%')?'%':'+'; let n=0; const step=Math.max(1,Math.ceil(target/35)); const timer=setInterval(()=>{n=Math.min(target,n+step);el.textContent=n+suffix;if(n>=target)clearInterval(timer)},28)})}
-    const cursor=$('#cursor'), halo=$('#cursor-halo'), heroArt=$('#hero-art'), heroArtInner=$('#hero-art-inner'); if(matchMedia('(pointer:fine)').matches){ let hx=innerWidth/2,hy=innerHeight/2,tx=hx,ty=hy; addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY;cursor.style.left=tx+'px';cursor.style.top=ty+'px'; if(heroArt && heroArtInner){const nx=(e.clientX-innerWidth/2)/innerWidth, ny=(e.clientY-innerHeight/2)/innerHeight; heroArtInner.style.transform=`translateY(${-ny*18}px) rotateX(${ny*-10}deg) rotateY(${nx*16}deg) rotateZ(${nx*2}deg)`}}); function followHalo(){hx+=(tx-hx)*.13;hy+=(ty-hy)*.13;halo.style.left=hx+'px';halo.style.top=hy+'px';requestAnimationFrame(followHalo)} followHalo(); $$('a,button,.project,.tech,.service-card').forEach(el=>{el.addEventListener('mouseenter',()=>{cursor.classList.add('active');halo.classList.add('active')});el.addEventListener('mouseleave',()=>{cursor.classList.remove('active');halo.classList.remove('active')})}); $$('.magnetic').forEach(el=>{el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();el.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.12}px,${(e.clientY-r.top-r.height/2)*.12}px)`});el.addEventListener('mouseleave',()=>el.style.transform='')}); $$('.spotlight').forEach(el=>el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();el.style.setProperty('--spot-x',(e.clientX-r.left)+'px');el.style.setProperty('--spot-y',(e.clientY-r.top)+'px'); const rx=(e.clientY-r.top-r.height/2)/-28, ry=(e.clientX-r.left-r.width/2)/28; el.style.transform=`perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-5px)`; el.addEventListener('mouseleave',()=>el.style.transform='',{once:true})})) }
+
+<div id="loader">
+  <h1 class="text-4xl font-black tracking-tighter" id="loader-text">HELIUM<span class="text-orange">²</span></h1>
+</div>
+
+<nav class="fixed w-full z-50 bg-black/60 backdrop-blur-lg border-b border-white/10">
+  <div class="flex justify-between items-center p-6 max-w-7xl mx-auto">
+    <div class="flex items-center gap-2">
+      <img src="logo.png" alt="HELIUM² Logo" class="logo-img" onerror="this.style.display='none'">
+      <h1 class="font-black text-xl tracking-tighter">HELIUM²</h1>
+    </div>
+    <div class="space-x-6 text-xs uppercase hidden md:flex">
+      <a href="#about" class="nav-link">About</a>
+      <a href="#services" class="nav-link">Services</a>
+      <a href="#projects" class="nav-link">Projects</a>
+      <a href="#contact" class="nav-link text-orange font-bold">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero section with blended background image -->
+<section id="about" class="hero-section px-6 pt-24 animated-bg min-h-screen flex items-center">
+  <img src="hero-image.png" class="hero-bg" id="hero-bg-img" alt="background">
+  <div class="hero-overlay"></div>
+  
+  <div class="hero-content max-w-7xl mx-auto w-full relative z-10">
+    <div class="grid md:grid-cols-12 gap-10 items-center">
+      <div class="md:col-span-10 lg:col-span-9" data-aos="fade-right" data-aos-duration="1200">
+        <h1 class="text-[11vw] md:text-8xl lg:text-[9.5rem] font-black leading-[0.85] mb-6 tracking-tighter uppercase whitespace-nowrap">
+          ENGINEERING <br>
+          <span class="text-orange" id="hero-title">SYSTEMS</span>
+        </h1>
+        
+        <p class="text-gray-200 mb-8 max-w-2xl text-lg md:text-xl drop-shadow-lg leading-relaxed">
+          We build high-performance software, dashboards, and digital systems designed for real-world efficiency.
+        </p>
+        
+        <a href="#contact" class="bg-orange text-black px-10 py-4 font-bold uppercase text-sm inline-flex items-center hover:bg-white transition-all duration-300 shadow-xl rounded-lg">
+          Get Started <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 animate-bounce hidden md:block">
+    <div class="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+      <div class="w-1 h-2 bg-orange rounded-full mt-2 animate-ping"></div>
+    </div>
+  </div>
+</section>
+     
+    
+  
+
+<!-- Stats Section -->
+<section class="py-20 px-6 border-y border-white/10 bg-black/40 tech-dots">
+  <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+    <div data-aos="zoom-in" data-aos-delay="100">
+      <div class="text-4xl md:text-5xl font-black text-orange mb-2">50+</div>
+      <div class="text-sm uppercase tracking-wider text-gray-400">Projects Delivered</div>
+    </div>
+    <div data-aos="zoom-in" data-aos-delay="200">
+      <div class="text-4xl md:text-5xl font-black text-orange mb-2">30+</div>
+      <div class="text-sm uppercase tracking-wider text-gray-400">Happy Clients</div>
+    </div>
+    <div data-aos="zoom-in" data-aos-delay="300">
+      <div class="text-4xl md:text-5xl font-black text-orange mb-2">24/7</div>
+      <div class="text-sm uppercase tracking-wider text-gray-400">Support Available</div>
+    </div>
+    <div data-aos="zoom-in" data-aos-delay="400">
+      <div class="text-4xl md:text-5xl font-black text-orange mb-2">100%</div>
+      <div class="text-sm uppercase tracking-wider text-gray-400">Client Satisfaction</div>
+    </div>
+  </div>
+</section>
+
+<section id="services" class="py-32 bg-white text-black px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16" data-aos="fade-up">
+      <span class="text-orange font-bold text-sm uppercase tracking-wider">What We Do</span>
+      <h2 class="text-6xl font-black mt-2 text-orange">Services</h2>
+      <div class="w-20 h-1 bg-orange mx-auto mt-4"></div>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-16">
+      <div class="group text-center md:text-left" data-aos="fade-up" data-aos-delay="100">
+        <div class="text-5xl text-orange mb-4"><i class="fas fa-code"></i></div>
+        <div class="h-1 w-12 bg-orange mb-6 group-hover:w-full transition-all duration-500 mx-auto md:mx-0"></div>
+        <h3 class="font-black text-2xl mb-4">Software Systems</h3>
+        <p class="text-gray-600">ERP systems, personalized dashboards, and automation tools engineered for scale.</p>
+      </div>
+
+      <div class="group text-center md:text-left" data-aos="fade-up" data-aos-delay="200">
+        <div class="text-5xl text-orange mb-4"><i class="fas fa-globe"></i></div>
+        <div class="h-1 w-12 bg-orange mb-6 group-hover:w-full transition-all duration-500 mx-auto md:mx-0"></div>
+        <h3 class="font-black text-2xl mb-4">Web Development</h3>
+        <p class="text-gray-600">Modern, lightning-fast websites and web applications built with cutting-edge stacks.</p>
+      </div>
+
+      <div class="group text-center md:text-left" data-aos="fade-up" data-aos-delay="300">
+        <div class="text-5xl text-orange mb-4"><i class="fas fa-paint-brush"></i></div>
+        <div class="h-1 w-12 bg-orange mb-6 group-hover:w-full transition-all duration-500 mx-auto md:mx-0"></div>
+        <h3 class="font-black text-2xl mb-4">UI/UX Design</h3>
+        <p class="text-gray-600">Minimal and intuitive user experiences that bridge the gap between human and machine.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HORIZONTAL SCROLLING GALLERY 1 - Background Images Side -->
+<section class="py-24 px-6 bg-gradient-to-b from-black to-gray-900 overflow-hidden">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12" data-aos="fade-up">
+      <span class="text-orange font-bold text-sm uppercase tracking-wider">Our Work in Motion</span>
+      <h2 class="text-5xl font-black mt-2">Creative <span class="text-orange">Gallery</span></h2>
+      <p class="text-gray-400 mt-4">Drag to scroll →</p>
+    </div>
+    
+    <div class="horizontal-scroll" id="galleryScroll1" data-aos="fade-up">
+      <div class="scroll-item"><img src="img1.jpeg" alt="Gallery 1" onerror="this.src='https://placehold.co/400x500/333/ff6b00?text=Image+1'"></div>
+      <div class="scroll-item"><img src="img2.jpeg" alt="Gallery 2" onerror="this.src='https://placehold.co/400x500/333/ff6b00?text=Image+2'"></div>
+      <div class="scroll-item"><img src="https://onfinity.io/blog/wp-content/uploads/Finance-Management-ERP-Dashboards-VIENNA-Advantage.jpg" alt="Gallery 3" onerror="this.src='https://placehold.co/400x500/333/ff6b00?text=Image+3'"></div>
+      <div class="scroll-item"><img src="https://laqshyainfosoft.com/images/side-banner/desktop-application.png" alt="Gallery 4" onerror="this.src='https://placehold.co/400x500/333/ff6b00?text=Image+4'"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Tech Stack Section -->
+<section class="py-24 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16" data-aos="fade-up">
+      <span class="text-orange font-bold text-sm uppercase tracking-wider">Our Ecosystem</span>
+      <h2 class="text-5xl font-black mt-2">Technology <span class="text-orange">Stack</span></h2>
+    </div>
+    
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6" data-aos="fade-up">
+      <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 text-center border border-white/10 hover:border-orange/50 transition-all glow">
+        <i class="fab fa-react text-5xl text-orange mb-3"></i>
+        <p class="font-bold">React.js</p>
+      </div>
+      <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 text-center border border-white/10 hover:border-orange/50 transition-all glow">
+        <i class="fab fa-node-js text-5xl text-orange mb-3"></i>
+        <p class="font-bold">Node.js</p>
+      </div>
+      <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 text-center border border-white/10 hover:border-orange/50 transition-all glow">
+        <i class="fab fa-python text-5xl text-orange mb-3"></i>
+        <p class="font-bold">Python</p>
+      </div>
+      <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 text-center border border-white/10 hover:border-orange/50 transition-all glow">
+        <i class="fas fa-database text-5xl text-orange mb-3"></i>
+        <p class="font-bold">MongoDB</p>
+      </div>
+    </div>
+    
+    <div class="relative mt-20 h-40 md:h-60" data-aos="fade-up">
+      <div class="absolute left-0 top-0 floating">
+        <div class="w-16 h-16 bg-orange/20 rounded-full blur-xl"></div>
+      </div>
+      <div class="absolute right-10 bottom-0 floating-delayed">
+        <div class="w-24 h-24 bg-orange/10 rounded-full blur-2xl"></div>
+      </div>
+      <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <i class="fas fa-cogs text-7xl text-orange/30"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Projects section: helium watsapp.jpeg and comment.jpeg side by side -->
+<section id="projects" class="py-32 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16" data-aos="fade-down">
+      <span class="text-orange font-bold text-sm uppercase tracking-wider">Case Studies</span>
+      <h2 class="text-5xl font-black mt-2 text-orange">Featured Project</h2>
+    </div>
+    
+    <div class="grid md:grid-cols-2 gap-8" data-aos="zoom-in-up">
+      <div class="relative overflow-hidden rounded-2xl group">
+        <img src="helium watsapp.jpeg" class="w-full transition-transform duration-700 group-hover:scale-105">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-10">
+          <h3 class="text-3xl font-bold">Pharmacy ERP Dashboard</h3>
+          <p class="text-orange">Smart system for patient & inventory management.</p>
+        </div>
+      </div>
+      <div class="relative overflow-hidden rounded-2xl group">
+        <img src="comment.jpeg" class="w-full transition-transform duration-700 group-hover:scale-105">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-10">
+          <h3 class="text-3xl font-bold">Client Feedback Hub</h3>
+          <p class="text-orange">Real-time insights & engagement analytics.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 
-    // Scroll-film controller: drives the existing hero artwork like a cinematic stage.
-    const filmHero = document.querySelector('.hero');
-    const filmArt = document.querySelector('.hero-art');
-    const filmCaption = document.querySelector('#film-caption-text');
-    const filmChapters = [
-      [0.00, 'A continuous digital story'],
-      [0.28, 'Systems in motion'],
-      [0.56, 'Designed for momentum'],
-      [0.82, 'Built to move']
-    ];
-    function updateFilmStage() {
-      if (!filmHero || !filmArt) return;
-      const r = filmHero.getBoundingClientRect();
-      const progress = Math.max(0, Math.min(1, -r.top / Math.max(1, r.height - innerHeight))); filmHero.classList.toggle('in-view', r.bottom > 0 && r.top < innerHeight);
-      const eased = progress * progress * (3 - 2 * progress);
-      filmHero.style.setProperty('--film-progress', eased.toFixed(3));
-      filmArt.style.setProperty('--scroll-shift', `${eased * 96}px`);
-      filmHero.classList.toggle('is-scrubbing', progress > .015 && progress < .98);
-      let chapter = filmChapters[0];
-      filmChapters.forEach(item => { if (progress >= item[0]) chapter = item; });
-      if (filmCaption && filmCaption.textContent !== chapter[1]) filmCaption.textContent = chapter[1];
-    }
-    addEventListener('scroll', updateFilmStage, { passive:true });
-    addEventListener('resize', updateFilmStage, { passive:true });
-    updateFilmStage();
+<!-- Testimonial Section - Removed CTO tag and company title -->
+<section class="py-24 px-6 bg-gradient-to-r from-orange/10 to-transparent">
+  <div class="max-w-4xl mx-auto text-center" data-aos="fade-up">
+    <i class="fas fa-quote-left text-5xl text-orange/30 mb-6"></i>
+    <p class="text-2xl md:text-3xl font-light italic mb-8">"HELIUM² transformed our digital infrastructure completely. Their engineering excellence is unmatched."</p>
+       </div>
+  </div>
+</section>
 
-    const sectionWipe = $('#section-wipe');
-    let sectionTransitionBusy = false;
-    function transitionToSection(target, updateHash=true) {
-      const destination = document.querySelector(target);
-      if (!destination || sectionTransitionBusy) return;
-      sectionTransitionBusy = true;
-      if (updateHash) history.pushState(null, '', target);
-      sectionWipe.classList.remove('is-moving');
-      void sectionWipe.offsetWidth;
-      sectionWipe.classList.add('is-moving');
-      window.setTimeout(() => {
-        destination.scrollIntoView({ behavior:'smooth', block:'start' });
-        destination.classList.remove('section-focus');
-        void destination.offsetWidth;
-        destination.classList.add('section-focus');
-        window.setTimeout(() => { sectionTransitionBusy = false; }, 620);
-      }, 265);
-    }
-    $$('a[href^="#"]').forEach(link => link.addEventListener('click', event => {
-      const target = link.getAttribute('href');
-      if (target && target !== '#top' && document.querySelector(target)) {
-        event.preventDefault();
-        transitionToSection(target);
-        links.classList.remove('open');
-      }
-    }));
+<section id="contact" class="bg-orange text-black py-32 px-6 relative overflow-hidden">
+  <div class="max-w-7xl mx-auto relative z-10">
+    <p class="uppercase text-xs tracking-[0.4em] mb-4 font-bold">Ready to build?</p>
+    <h2 class="text-6xl md:text-8xl font-black leading-none mb-8" data-aos="fade-right">
+      LET'S WORK <br> TOGETHER
+    </h2>
+    <p class="italic text-xl mb-12 max-w-2xl">"Innovating ahead of immediate customer demands. Tell us your vision — we’ll engineer the path to it."</p>
 
-    const toast=$('#toast'); function notify(message){toast.textContent=message;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),3500)} $('#subscribe').addEventListener('submit',e=>{e.preventDefault();const input=e.currentTarget.querySelector('input');notify('Thanks — you are on the HELIUM² list.');input.value=''});
-  </script>
+    <div class="flex flex-wrap gap-4">
+      <a href="https://wa.me/919497647784" target="_blank" class="bg-black text-white px-12 py-5 uppercase text-sm font-black hover:invert transition-all rounded-lg flex items-center gap-2">
+        <i class="fab fa-whatsapp"></i> Message
+      </a>
+      <a href="https://www.instagram.com/helium2__?igsh=Y3NjdXc3ZHR2aHh0" target="_blank" class="border-2 border-black px-12 py-5 uppercase text-sm font-black hover:bg-black hover:text-white transition-all rounded-lg flex items-center gap-2">
+        <i class="fab fa-instagram"></i> Instagram
+      </a>
+      <a href="https://www.linkedin.com/company/helium-2/" target="_blank" class="border-2 border-black px-12 py-5 uppercase text-sm font-black hover:bg-black hover:text-white transition-all rounded-lg flex items-center gap-2">
+        <i class="fab fa-linkedin"></i> LinkedIn
+      </a>
+    </div>
+  </div>
+  <div class="absolute -bottom-10 -right-10 text-[15rem] font-black opacity-5 select-none pointer-events-none">HELIUM</div>
+</section>
+
+<!-- Enhanced Footer -->
+<footer class="bg-black border-t border-white/10 pt-20 pb-10 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid md:grid-cols-4 gap-12 mb-16">
+      <div data-aos="fade-up">
+        <div class="flex items-center gap-2 mb-6">
+          <img src="image.jpeg" alt="HELIUM² Logo" class="logo-img" onerror="this.style.display='none'">
+          <h2 class="font-black text-2xl tracking-tighter">HELIUM<span class="text-orange">²</span></h2>
+        </div>
+        <p class="text-gray-500 text-sm mb-4">Engineering the future through innovative software solutions and digital transformation.</p>
+        <div class="flex gap-4">
+          <a href="#" class="text-gray-500 hover:text-orange transition-colors"><i class="fab fa-twitter text-xl"></i></a>
+          <a href="#" class="text-gray-500 hover:text-orange transition-colors"><i class="fab fa-github text-xl"></i></a>
+          <a href="#" class="text-gray-500 hover:text-orange transition-colors"><i class="fab fa-dribbble text-xl"></i></a>
+        </div>
+      </div>
+      
+      <div data-aos="fade-up" data-aos-delay="100">
+        <h3 class="font-bold text-white mb-6 text-lg">Quick Links</h3>
+        <ul class="space-y-3 text-gray-500 text-sm">
+          <li><a href="#about" class="hover:text-orange transition-colors">About Us</a></li>
+          <li><a href="#services" class="hover:text-orange transition-colors">Services</a></li>
+          <li><a href="#projects" class="hover:text-orange transition-colors">Projects</a></li>
+          <li><a href="#contact" class="hover:text-orange transition-colors">Contact</a></li>
+        </ul>
+      </div>
+      
+      <div data-aos="fade-up" data-aos-delay="200">
+        <h3 class="font-bold text-white mb-6 text-lg">Our Services</h3>
+        <ul class="space-y-3 text-gray-500 text-sm">
+          <li><i class="fas fa-check-circle text-orange text-xs mr-2"></i> Software Development</li>
+          <li><i class="fas fa-check-circle text-orange text-xs mr-2"></i> Cloud Solutions</li>
+          <li><i class="fas fa-check-circle text-orange text-xs mr-2"></i> AI & Automation</li>
+          <li><i class="fas fa-check-circle text-orange text-xs mr-2"></i> UI/UX Strategy</li>
+        </ul>
+      </div>
+      
+      <div data-aos="fade-up" data-aos-delay="300">
+        <h3 class="font-bold text-white mb-6 text-lg">Stay Updated</h3>
+        <p class="text-gray-500 text-sm mb-4">Subscribe to our newsletter</p>
+        <div class="flex">
+          <input type="email" placeholder="Email address" class="bg-white/10 border border-white/20 rounded-l-lg px-4 py-2 text-sm w-full focus:outline-none focus:border-orange">
+          <button class="bg-orange text-black px-4 rounded-r-lg font-bold text-sm hover:bg-white transition-colors">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+        <div class="mt-6">
+          <p class="text-gray-500 text-sm"><i class="fas fa-phone-alt text-orange mr-2"></i> +91 94976 47784</p>
+          <p class="text-gray-500 text-sm mt-2"><i class="fas fa-envelope text-orange mr-2"></i> hello@helium2.com</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="text-gray-500 text-xs">
+        © 2026 HELIUM² — Engineered in Kerala. All rights reserved.
+      </div>
+      <div class="flex gap-6 text-gray-500 text-xs">
+        <a href="#" class="hover:text-orange transition-colors">Privacy Policy</a>
+        <a href="#" class="hover:text-orange transition-colors">Terms of Service</a>
+        <a href="#" class="hover:text-orange transition-colors">Cookie Policy</a>
+      </div>
+      <div class="flex gap-2">
+        <img src="badge1.jpeg" class="w-8 h-8 rounded-full opacity-70 hover:opacity-100 transition-opacity" onerror="this.style.display='none'">
+        <img src="badge2.jpeg" class="w-8 h-8 rounded-full opacity-70 hover:opacity-100 transition-opacity" onerror="this.style.display='none'">
+        <img src="badge3.jpeg" class="w-8 h-8 rounded-full opacity-70 hover:opacity-100 transition-opacity" onerror="this.style.display='none'">
+      </div>
+    </div>
+    
+    <div class="mt-8 text-center">
+      <span class="inline-flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full text-xs text-gray-400">
+        <i class="fas fa-shield-alt text-orange"></i> 100% Secure & Confidential
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+  AOS.init({ once: true, duration: 800 });
+
+  window.addEventListener('load', () => {
+    const tl = gsap.timeline();
+    tl.to("#loader-text", { duration: 1, opacity: 0, y: -20, ease: "power4.inOut" })
+      .to("#loader", { duration: 0.8, height: 0, ease: "expo.inOut" })
+      .from("nav", { opacity: 0, y: -20, duration: 0.5 }, "-=0.2");
+  });
+  // Replace the old hero-title animation with this:
+if (window.innerWidth > 768) {
+  gsap.to("#hero-title", {
+    scrollTrigger: { 
+      trigger: "#hero-title", 
+      start: "top center", 
+      scrub: true 
+    },
+    x: 100,
+    opacity: 0.5
+  });
+}
+
+  const heroBg = document.getElementById('hero-bg-img');
+  if (heroBg) {
+    document.addEventListener('mousemove', (e) => {
+      const { clientX, clientY } = e;
+      const x = (clientX - window.innerWidth / 2) / 50;
+      const y = (clientY - window.innerHeight / 2) / 50;
+      heroBg.style.transform = `scale(1.05) translate(${x}px, ${y}px)`;
+    });
+  }
+
+  gsap.to("#hero-title", {
+    scrollTrigger: { trigger: "#hero-title", start: "top center", scrub: true },
+    x: 100,
+    opacity: 0.5
+  });
+  
+  if (heroBg) {
+    gsap.to(heroBg, {
+      scrollTrigger: { trigger: "#about", start: "top top", end: "bottom top", scrub: true },
+      y: 100,
+      opacity: 0.2
+    });
+  }
+
+  // Horizontal scroll with drag
+  const scrollContainers = document.querySelectorAll('.horizontal-scroll');
+  scrollContainers.forEach(container => {
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    container.addEventListener('mousedown', (e) => {
+      isDown = true;
+      container.style.cursor = 'grabbing';
+      startX = e.pageX - container.offsetLeft;
+      scrollLeft = container.scrollLeft;
+    });
+    container.addEventListener('mouseleave', () => {
+      isDown = false;
+      container.style.cursor = 'grab';
+    });
+    container.addEventListener('mouseup', () => {
+      isDown = false;
+      container.style.cursor = 'grab';
+    });
+    container.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - container.offsetLeft;
+      const walk = (x - startX) * 2;
+      container.scrollLeft = scrollLeft - walk;
+    });
+    container.style.cursor = 'grab';
+  });
+</script>
+
 </body>
 </html>
